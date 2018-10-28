@@ -27,7 +27,7 @@ pub fn painted_icon(file: &File, style: &FileStyle) -> String {
     let file_icon = icon(&file).to_string();
     let painted = style.exts
             .colour_file(&file)
-            .map_or(file_icon.to_string(), |c| { 
+            .map_or(file_icon.to_string(), |c| {
                 // Remove underline from icon
                 if c.is_underline {
                     match c.foreground {
@@ -35,7 +35,7 @@ pub fn painted_icon(file: &File, style: &FileStyle) -> String {
                         None => Style::default().paint(file_icon).to_string(),
                     }
                 } else {
-                    c.paint(file_icon).to_string() 
+                    c.paint(file_icon).to_string()
                 }
             });
     format!("{} ", painted)
@@ -45,7 +45,7 @@ fn icon(file: &File) -> char {
     let extensions = Box::new(FileExtensions);
     if file.is_directory() { '\u{f115}' }
     else if let Some(icon) = extensions.icon_file(file) { icon }
-    else { 
+    else {
         if let Some(ext) = file.ext.as_ref() {
             match ext.as_str() {
                 "ai" => '\u{e7b4}',
@@ -61,6 +61,7 @@ fn icon(file: &File) -> char {
                 "d" => '\u{e7af}',
                 "dart" => '\u{e798}',
                 "db" => '\u{f1c0}',
+                "deb" => '\u{f306}',
                 "diff" => '\u{f440}',
                 "doc" => '\u{f1c2}',
                 "ebook" => '\u{e28b}',
@@ -69,12 +70,16 @@ fn icon(file: &File) -> char {
                 "erl" => '\u{e7b1}',
                 "font" => '\u{f031}',
                 "gform" => '\u{f298}',
+                "gif" => '\u{f40f}',
                 "git" => '\u{f1d3}',
                 "go" => '\u{e626}',
+                "gz" => '\u{f16b}',
                 "hs" => '\u{e777}',
                 "html" => '\u{f13b}',
                 "iml" => '\u{e7b5}',
                 "java" => '\u{e204}',
+                "jpg" => '\u{f40f}',
+                "jpeg" => '\u{f40f}',
                 "js" => '\u{e74e}',
                 "json" => '\u{e60b}',
                 "jsx" => '\u{e7ba}',
@@ -84,27 +89,33 @@ fn icon(file: &File) -> char {
                 "md" => '\u{f48a}',
                 "mustache" => '\u{e60f}',
                 "npmignore" => '\u{e71e}',
+                "pet" => '\u{f16b}',
                 "pdf" => '\u{f1c1}',
                 "php" => '\u{e73d}',
                 "pl" => '\u{e769}',
+                "png" => '\u{f40f}',
                 "ppt" => '\u{f1c4}',
                 "psd" => '\u{e7b8}',
                 "py" => '\u{e606}',
                 "r" => '\u{f25d}',
                 "rb" => '\u{e21e}',
                 "rdb" => '\u{e76d}',
+                "rpm" => '\u{f16b}',
                 "rs" => '\u{e7a8}',
                 "rss" => '\u{f09e}',
                 "rubydoc" => '\u{e73b}',
                 "sass" => '\u{e603}',
                 "scala" => '\u{e737}',
+                "sh" => '\u{f489}',
                 "shell" => '\u{f489}',
                 "sqlite3" => '\u{e7c4}',
                 "styl" => '\u{e600}',
                 "tex" => '\u{e600}',
+                "tgz" => '\u{f16b}',
                 "ts" => '\u{e628}',
                 "twig" => '\u{e61c}',
                 "txt" => '\u{f15c}',
+                "txz" => '\u{f16b}',
                 "video" => '\u{f03d}',
                 "vim" => '\u{e62b}',
                 "xls" => '\u{f1c3}',

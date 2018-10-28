@@ -174,7 +174,7 @@ impl Colours {
             },
 
             users: Users {
-                user_you:           Yellow.bold(),
+                user_you:           Yellow.normal(),
                 user_someone_else:  Style::default(),
                 group_yours:        Yellow.bold(),
                 group_not_yours:    Style::default(),
@@ -194,17 +194,16 @@ impl Colours {
             },
 
             punctuation:  Black.bold(),
-            date:         Blue.normal(),
             inode:        Purple.normal(),
 
             date: Date {
-                time:           Blue.normal(),
-                time_today:     Fixed(93).normal(),
-                time_yesterday: Fixed(99).normal(),
-                time_week:      Fixed(105).normal(),
-                time_month:     Fixed(111).normal(),
-                time_year:      Fixed(117).normal(),
-                time_past:      Fixed(123).normal(),
+                time:           Cyan.bold(),
+                time_today:     Cyan.normal(),
+                time_yesterday: Purple.bold(),
+                time_week:      Purple.normal(),
+                time_month:     Blue.bold(),
+                time_year:      Blue.normal(),
+                time_past:      Blue.normal(),
             },
 
             blocks:       Cyan.normal(),
