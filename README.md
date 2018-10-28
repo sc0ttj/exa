@@ -13,7 +13,6 @@
 
 ![Screenshots of exa](screenshots.png)
 
-
 ## Options
 
 exa’s options are almost, but not quite, entirely unlike `ls`'s.
@@ -38,6 +37,7 @@ exa’s options are almost, but not quite, entirely unlike `ls`'s.
 - **-r**, **--reverse**: reverse the sort order
 - **-s**, **--sort=(field)**: which field to sort by
 - **--group-directories-first**: list directories before other files
+- **-D**, **--only-dirs**: list only directories
 - **--git-ignore**: ignore files mentioned in `.gitignore`
 - **-I**, **--ignore-glob=(globs)**: glob patterns (pipe-separated) of files to ignore
 
@@ -66,7 +66,6 @@ These options are available when running with --long (`-l`):
 - Valid sort fields are **accessed**, **created**, **extension**, **Extension**, **inode**, **modified**, **name**, **Name**, **size**, **type**, and **none**. Fields starting with a capital letter sort uppercase before lowercase. The modified field has the aliases **date**, **time**, and **newest**, while its reverse has the aliases **age** and **oldest**.
 - Valid time fields are **modified**, **accessed**, and **created**.
 - Valid time styles are **default**, **iso**, **long-iso**, and **full-iso**.
-
 
 ## Installation
 
@@ -116,9 +115,9 @@ Programs such as exa that are basically interfaces to the system are [notoriousl
 
 The initial attempt to solve the problem was just to create a directory of “awkward” test cases, run exa on it, and make sure it produced the correct output. But even this output would change if, say, the user’s locale formats dates in a different way. These can be mocked inside the code, but at the cost of making that code more complicated to read and understand.
 
-An alternative solution is to fake *everything*: create a virtual machine with a known state and run the tests on *that*. This is what Vagrant does. Although it takes a while to download and set up, it gives everyone the same development environment to test for any obvious regressions.
+An alternative solution is to fake _everything_: create a virtual machine with a known state and run the tests on _that_. This is what Vagrant does. Although it takes a while to download and set up, it gives everyone the same development environment to test for any obvious regressions.
 
-[Vagrant]: https://www.vagrantup.com/docs/why-vagrant/
+[vagrant]: https://www.vagrantup.com/docs/why-vagrant/
 [testing]: https://eev.ee/blog/2016/08/22/testing-for-people-who-hate-testing/#troublesome-cases
 
 First, initialise the VM:
@@ -133,7 +132,6 @@ The first command downloads the virtual machine image, and then runs our provisi
     vm$ ./xtests/run
     All the tests passed!
 
-
 ### Running without Vagrant
 
-Of course, the drawback of having a standard development environment is that you stop noticing bugs that occur outside of it. For this reason, Vagrant isn’t a *necessary* development step — it’s there if you’d like to use it, but exa still gets used and tested on other platforms. It can still be built and compiled on any target triple that it supports, VM or no VM, with `cargo build` and `cargo test`.
+Of course, the drawback of having a standard development environment is that you stop noticing bugs that occur outside of it. For this reason, Vagrant isn’t a _necessary_ development step — it’s there if you’d like to use it, but exa still gets used and tested on other platforms. It can still be built and compiled on any target triple that it supports, VM or no VM, with `cargo build` and `cargo test`.
