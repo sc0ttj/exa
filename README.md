@@ -2,6 +2,13 @@
 
 [exa](https://the.exa.website/) is a replacement for `ls` written in Rust.
 
+## This is a fork with:
+
+- added Nerd font icons indicating filetypes (PR #368)
+- names colours (PR #370)
+- coloured dates (PR #253)
+- fix for geting Git info of files (PR #378)
+
 ## Screenshots
 
 ![Screenshots of exa](screenshots.png)
@@ -21,6 +28,7 @@ exa’s options are almost, but not quite, entirely unlike `ls`'s.
 - **-x**, **--across**: sort the grid across, rather than downwards
 - **--colo[u]r**: when to use terminal colours
 - **--colo[u]r-scale**: highlight levels of file sizes distinctly
+- **--icons**: show icons next to file names (requires Nerd fonts)
 
 ### Filtering Options
 
@@ -67,6 +75,8 @@ Once you have it set up, a simple `make install` will compile exa and install it
 
 exa depends on [libgit2](https://github.com/alexcrichton/git2-rs) for certain features.
 If you’re unable to compile libgit2, you can opt out of Git support by running `cargo build --release --no-default-features`.
+
+The `--icons` option required Nerd fonts to be installed and your terminal setup to use them: Download your font of choice, put it in `~/.fonts`, run `fc-cache -rv`, then configure your terminal to use your Nerd font. See the [NerdFont](https://github.com/ryanoasis/nerd-fonts) repo for more informaiton.
 
 ### Cargo Install
 
