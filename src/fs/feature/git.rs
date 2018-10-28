@@ -53,7 +53,7 @@ impl FromIterator<PathBuf> for GitCache {
             else {
                 match GitRepo::discover(path) {
                     Ok(r) => {
-                        if let Some(mut r2) = git.repos.iter_mut().find(|e| e.has_workdir(&r.workdir)) {
+                        if let Some(r2) = git.repos.iter_mut().find(|e| e.has_workdir(&r.workdir)) {
                             debug!("Adding to existing repo (workdir matches with {:?})", r2.workdir);
                             r2.extra_paths.push(r.original_path);
                             continue;
@@ -134,7 +134,7 @@ impl GitRepo {
 
         debug!("Querying Git repo {:?} for the first time", &self.workdir);
         let repo = replace(&mut *contents, Processing).inner_repo();
-        let statuses = repo_to_statuses(&repo, &self.workdir);
+        let statuses = repo_to_statuses(repo, &self.workdir);
         let result = statuses.status(index, prefix_lookup);
         let _processing = replace(&mut *contents, After { statuses });
         result
@@ -194,7 +194,7 @@ impl GitContents {
 /// mapping of files to their Git status.
 /// We will have already used the working directory at this point, so it gets
 /// passed in rather than deriving it from the `Repository` again.
-fn repo_to_statuses(repo: &git2::Repository, workdir: &Path) -> Git {
+fn repo_to_statuses(repo: git2::Repository, workdir: &Path) -> Git {
     let mut statuses = Vec::new();
 
     info!("Getting Git statuses for repo with workdir {:?}", workdir);
@@ -268,7 +268,8 @@ fn reorient(path: &Path) -> PathBuf {
     match current_dir() {
         Err(_)  => Path::new(".").join(&path),
         Ok(dir) => dir.join(&path),
-    }
+    }.canonicalize().unwrap()   // errors can be ignored here because they only occur if
+                                // the path does not exist / a component is not a folder
 }
 
 /// The character to display if the file has been modified, but not staged.
