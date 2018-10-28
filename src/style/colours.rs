@@ -11,16 +11,17 @@ use style::lsc::Pair;
 pub struct Colours {
     pub colourful: bool,
     pub scale: bool,
+    pub time_scale: bool,
 
     pub filekinds:  FileKinds,
     pub perms:      Permissions,
     pub size:       Size,
+    pub date:       Date,
     pub users:      Users,
     pub links:      Links,
     pub git:        Git,
 
     pub punctuation:  Style,
-    pub date:         Style,
     pub inode:        Style,
     pub blocks:       Style,
     pub header:       Style,
@@ -81,6 +82,18 @@ pub struct Size {
 }
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct Date {
+    pub time: Style,
+    pub time_today: Style,
+    pub time_yesterday: Style,
+    pub time_week: Style,
+    pub time_month: Style,
+    pub time_year: Style,
+    pub time_past: Style,
+}
+
+
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Users {
     pub user_you: Style,
     pub user_someone_else: Style,
@@ -108,10 +121,11 @@ impl Colours {
         Colours::default()
     }
 
-    pub fn colourful(scale: bool) -> Colours {
+    pub fn colourful(scale: bool, time_scale: bool) -> Colours {
         Colours {
             colourful: true,
-            scale,
+            scale: scale,
+            time_scale: time_scale,
 
             filekinds: FileKinds {
                 normal:       Style::default(),
@@ -179,9 +193,18 @@ impl Colours {
                 typechange:  Purple.normal(),
             },
 
+            date: Date {
+                time:           Blue.normal(),
+                time_today:     Fixed(93).normal(),
+                time_yesterday: Fixed(99).normal(),
+                time_week:      Fixed(105).normal(),
+                time_month:     Fixed(111).normal(),
+                time_year:      Fixed(117).normal(),
+                time_past:      Fixed(123).normal(),
+            },
+
             punctuation:  Fixed(244).normal(),
-            date:         Blue.normal(),
-            inode:        Purple.normal(),
+                    inode:        Purple.normal(),
             blocks:       Cyan.normal(),
             header:       Style::default().underline(),
 
@@ -254,47 +277,54 @@ impl Colours {
     /// so `set_ls` should have been run first.
     pub fn set_exa(&mut self, pair: &Pair) -> bool {
         match pair.key {
-            "ur" => self.perms.user_read          = pair.to_style(),
-            "uw" => self.perms.user_write         = pair.to_style(),
-            "ux" => self.perms.user_execute_file  = pair.to_style(),
-            "ue" => self.perms.user_execute_other = pair.to_style(),
-            "gr" => self.perms.group_read         = pair.to_style(),
-            "gw" => self.perms.group_write        = pair.to_style(),
-            "gx" => self.perms.group_execute      = pair.to_style(),
-            "tr" => self.perms.other_read         = pair.to_style(),
-            "tw" => self.perms.other_write        = pair.to_style(),
-            "tx" => self.perms.other_execute      = pair.to_style(),
-            "su" => self.perms.special_user_file  = pair.to_style(),
-            "sf" => self.perms.special_other      = pair.to_style(),
-            "xa" => self.perms.attribute          = pair.to_style(),
+            "ur" => self.perms.user_read              = pair.to_style(),
+            "uw" => self.perms.user_write             = pair.to_style(),
+            "ux" => self.perms.user_execute_file      = pair.to_style(),
+            "ue" => self.perms.user_execute_other     = pair.to_style(),
+            "gr" => self.perms.group_read             = pair.to_style(),
+            "gw" => self.perms.group_write            = pair.to_style(),
+            "gx" => self.perms.group_execute          = pair.to_style(),
+            "tr" => self.perms.other_read             = pair.to_style(),
+            "tw" => self.perms.other_write            = pair.to_style(),
+            "tx" => self.perms.other_execute          = pair.to_style(),
+            "su" => self.perms.special_user_file      = pair.to_style(),
+            "sf" => self.perms.special_other          = pair.to_style(),
+            "xa" => self.perms.attribute              = pair.to_style(),
 
-            "sn" => self.size.numbers             = pair.to_style(),
-            "sb" => self.size.unit                = pair.to_style(),
-            "df" => self.size.major               = pair.to_style(),
-            "ds" => self.size.minor               = pair.to_style(),
+            "sn" => self.size.numbers                 = pair.to_style(),
+            "sb" => self.size.unit                    = pair.to_style(),
+            "df" => self.size.major                   = pair.to_style(),
+            "ds" => self.size.minor                   = pair.to_style(),
 
-            "uu" => self.users.user_you           = pair.to_style(),
-            "un" => self.users.user_someone_else  = pair.to_style(),
-            "gu" => self.users.group_yours        = pair.to_style(),
-            "gn" => self.users.group_not_yours    = pair.to_style(),
+            "uu" => self.users.user_you               = pair.to_style(),
+            "un" => self.users.user_someone_else      = pair.to_style(),
+            "gu" => self.users.group_yours            = pair.to_style(),
+            "gn" => self.users.group_not_yours        = pair.to_style(),
 
-            "lc" => self.links.normal             = pair.to_style(),
-            "lm" => self.links.multi_link_file    = pair.to_style(),
+            "lc" => self.links.normal                 = pair.to_style(),
+            "lm" => self.links.multi_link_file        = pair.to_style(),
 
-            "ga" => self.git.new                  = pair.to_style(),
-            "gm" => self.git.modified             = pair.to_style(),
-            "gd" => self.git.deleted              = pair.to_style(),
-            "gv" => self.git.renamed              = pair.to_style(),
-            "gt" => self.git.typechange           = pair.to_style(),
+            "ga" => self.git.new                      = pair.to_style(),
+            "gm" => self.git.modified                 = pair.to_style(),
+            "gd" => self.git.deleted                  = pair.to_style(),
+            "gv" => self.git.renamed                  = pair.to_style(),
+            "gt" => self.git.typechange               = pair.to_style(),
 
-            "xx" => self.punctuation              = pair.to_style(),
-            "da" => self.date                     = pair.to_style(),
-            "in" => self.inode                    = pair.to_style(),
-            "bl" => self.blocks                   = pair.to_style(),
-            "hd" => self.header                   = pair.to_style(),
-            "lp" => self.symlink_path             = pair.to_style(),
-            "cc" => self.control_char             = pair.to_style(),
-            "bO" => self.broken_path_overlay      = pair.to_style(),
+            "da" => self.date.time                    = pair.to_style(),
+            "dato" => self.date.time_today            = pair.to_style(),
+            "dayd" => self.date.time_yesterday        = pair.to_style(),
+            "dawe" => self.date.time_week             = pair.to_style(),
+            "damo" => self.date.time_month            = pair.to_style(),
+            "dayr" => self.date.time_year             = pair.to_style(),
+            "daps" => self.date.time_past             = pair.to_style(),
+
+            "xx" => self.punctuation                  = pair.to_style(),
+            "in" => self.inode                        = pair.to_style(),
+            "bl" => self.blocks                       = pair.to_style(),
+            "hd" => self.header                       = pair.to_style(),
+            "lp" => self.symlink_path                 = pair.to_style(),
+            "cc" => self.control_char                 = pair.to_style(),
+            "bO" => self.broken_path_overlay          = pair.to_style(),
 
              _   => return false,
         }
@@ -384,6 +414,30 @@ impl render::SizeColours for Colours {
     fn major(&self)   -> Style { self.size.major }
     fn comma(&self)   -> Style { self.punctuation }
     fn minor(&self)   -> Style { self.size.minor }
+}
+
+impl render::TimeColours for Colours
+{
+  fn stamp_age (&self, age: i64) -> Style {
+      if self.time_scale {
+          if age < 60 * 60 * 24 {
+              self.date.time_today
+          } else if age < 60 * 60 * 24 * 2 {
+              self.date.time_yesterday
+          } else if age < 60 * 60 * 24 * 7 {
+              self.date.time_week
+          } else if age < 60 * 60 * 24 * 30 {
+              self.date.time_month
+          } else if age < 60 * 60 * 24 * 365 {
+              self.date.time_year
+          } else {
+              self.date.time_past
+          }
+      }
+      else {
+          self.date.time_today
+      }
+  }
 }
 
 impl render::UserColours for Colours {
