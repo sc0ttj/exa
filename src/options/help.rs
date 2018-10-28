@@ -23,6 +23,7 @@ DISPLAY OPTIONS
 FILTERING AND SORTING OPTIONS
   -a, --all                  show hidden and 'dot' files
   -d, --list-dirs            list directories like regular files
+  -D, --dirs-only            list only directories
   -r, --reverse              reverse the sort order
   -s, --sort SORT_FIELD      which field to sort by
   --group-directories-first  list directories before other files
